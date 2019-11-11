@@ -9,7 +9,7 @@
  * 
  */
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>     
 #include <math.h>
 
 /**
@@ -38,6 +38,10 @@ int main()
         rez[i] = (double *)malloc(8001 * sizeof(double));
 
     // ================= Array generator ======================
+    /**
+     * @brief Calculate y value
+     * 
+     */
     for (double i = -4; i < 4; i += 0.001)
     {
         rez[0][j] = i;
@@ -47,6 +51,10 @@ int main()
     }
 
     // === Searching maximum number ===========================
+    /**
+     * @brief Searching maximum number
+     * 
+     */
     t_rez = rez[1][0];
 
     for (int i = 1; i < j - 2; i++)
