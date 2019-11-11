@@ -1,17 +1,38 @@
+/**
+ * @file Source.c
+ * @author Kornelijus Petronis
+ * @brief 
+ * @version 1.5.3
+ * @date 2019-11-11
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+/**
+ * @brief Matematine funkcija
+ * 
+ * @param x 
+ * @return double 
+ */
 double equation(double x);
 
 int j = 0;
 
 int main()
 {
+
     double t_rez, y;
     int index, t_index, i_begin, i_end;
 
     // Dinamic array
+    /**
+     * @brief Dinamic array 1
+     * 
+     */
     double **rez = (double **)malloc(2 * sizeof(double *));
     for (int i = 0; i < 2; i++)
         rez[i] = (double *)malloc(8001 * sizeof(double));
@@ -41,6 +62,10 @@ int main()
 
     // ==== Array copy only positive numbers with maximum number in it =====
     // Searching index begin and end
+    /**
+     * @brief Searching for segment of positive values which the maximum number.
+     * 
+     */
     t_index = index;
     while (1)
     {
@@ -62,11 +87,19 @@ int main()
     }
     // ------------------------------------------------------------
     // Dinamic array
+    /**
+     * @brief Dinamic array 2
+     * 
+     */
     double **rez1 = (double **)malloc(2 * sizeof(double *));
     for (int i = 0; i < 2; i++)
         rez1[i] = (double *)malloc((i_end - i_begin + 1) * sizeof(double));
 
     // Create new array
+    /**
+     * @brief Creating new array
+     * 
+     */
     for (int i = 0; i <= (i_end - i_begin); i++)
     {
         rez1[0][i] = rez[0][i_begin + i];
@@ -74,6 +107,11 @@ int main()
     }
 
     // =================== Sorting ============================
+    /**
+     * @brief Sorting algorithm
+     * from smallest to biggest
+     * 
+     */
     for (int i = 0; i <= (i_end - i_begin) - 1; i++)
     {
         for (int k = i + 1; k <= (i_end - i_begin); k++)
@@ -92,12 +130,21 @@ int main()
     }
 
     // =================== Print ===============================
+    /**
+     * @brief Print loop
+     * From smallest to biggest
+     * 
+     */
     for (int k = 0; k <= (i_end - i_begin); k++)
     {
         printf(" %lf %lf\n", rez1[0][k], rez1[1][k]);
         // printf("%lf %lf\n", rez[0][k], rez[1][k]);
     }
 
+    /**
+ * @brief Construct a new free object
+ * 
+ */
     free(rez);
     free(rez1);
 
@@ -107,6 +154,7 @@ int main()
 double equation(double x)
 {
     double y;
+
     y = -(pow(x, 4)) + 3 * pow(x, 3) + 2 * pow(x, 2) - 5 * x + 0.5;
 
     return y;
