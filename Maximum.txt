@@ -1,0 +1,4 @@
+Maximum y number
+x          y
+2.450000 8.343369
+

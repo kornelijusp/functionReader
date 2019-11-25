@@ -8,40 +8,48 @@
  * @copyright Copyright (c) 2019
  * 
  */
+
 #include <stdio.h>
-#include <stdlib.h>     
+#include <stdlib.h>
 #include <math.h>
 
+FILE *fi;
+
 /**
- * @brief Matematine funkcija
+ * @brief Math function
  * 
  * @param x 
  * @return double 
  */
 double equation(double x);
 
+double **createArray(double **arrayName, int row, int column);
+
 int j = 0;
 
 int main()
 {
-
+    //===================================
     double t_rez, y;
     int index, t_index, i_begin, i_end;
+    // Array -----------
+    double **rez, **rez1;
+    // **rez = all x & y values
+    // **rez1 = only x & y values then y is above 0 and this array have maximum point
+    //===================================
 
     // Dinamic array
     /**
      * @brief Dinamic array 1
-     * 
      */
-    double **rez = (double **)malloc(2 * sizeof(double *));
-    for (int i = 0; i < 2; i++)
-        rez[i] = (double *)malloc(8001 * sizeof(double));
+
+    rez = createArray(rez, 2, 8001);
 
     // ================= Array generator ======================
     /**
      * @brief Calculate y value
-     * 
      */
+    // ==========================================   PAKEISTI I WHILE ARBA NE
     for (double i = -4; i < 4; i += 0.001)
     {
         rez[0][j] = i;
@@ -66,7 +74,11 @@ int main()
             index = i;
         }
     }
-    printf("Maximum y number\nx          y\n%lf %lf\n\n", rez[0][index], rez[1][index]);
+    fi = fopen("Maximum.txt", "w");
+
+    fprintf(fi, "Maximum y number\nx          y\n%lf %lf\n\n", rez[0][index], rez[1][index]);
+
+    fclose(fi);
 
     // ==== Array copy only positive numbers with maximum number in it =====
     // Searching index begin and end
@@ -93,15 +105,14 @@ int main()
         i_end = t_index;
         t_index++;
     }
+
     // ------------------------------------------------------------
     // Dinamic array
     /**
      * @brief Dinamic array 2
      * 
      */
-    double **rez1 = (double **)malloc(2 * sizeof(double *));
-    for (int i = 0; i < 2; i++)
-        rez1[i] = (double *)malloc((i_end - i_begin + 1) * sizeof(double));
+    rez1 = createArray(rez, 2, i_end - i_begin + 1);
 
     // Create new array
     /**
@@ -143,16 +154,16 @@ int main()
      * From smallest to biggest
      * 
      */
-    for (int k = 0; k <= (i_end - i_begin); k++)
-    {
-        printf(" %lf %lf\n", rez1[0][k], rez1[1][k]);
-        // printf("%lf %lf\n", rez[0][k], rez[1][k]);
-    }
+    fi = fopen("Array.txt", "w");
 
-    /**
- * @brief Construct a new free object
- * 
- */
+    for (int k = 0; k <= (i_end - i_begin); k++)
+        fprintf(fi, "%lf %lf\n", rez1[0][k], rez1[1][k]);
+
+    fclose(fi);
+
+    /** 
+     * @brief Construct a new free object
+     */
     free(rez);
     free(rez1);
 
@@ -161,13 +172,21 @@ int main()
 
 double equation(double x)
 {
-    double y;
-
-    y = -(pow(x, 4)) + 3 * pow(x, 3) + 2 * pow(x, 2) - 5 * x + 0.5;
-
-    return y;
+    return -(pow(x, 4)) + 3 * pow(x, 3) + 2 * pow(x, 2) - 5 * x + 0.5;
 }
 
+//===================================================================================
+// Dinamic array
+double **createArray(double **arrayName, int row, int column)
+{
+    arrayName = (double **)malloc(row * sizeof(double *));
+
+    for (int i = 0; i < 2; i++)
+        arrayName[i] = (double *)malloc(column * sizeof(double));
+
+    return arrayName;
+}
+//====================================================================================
 /*
 begin 5112 | end 7145
 
