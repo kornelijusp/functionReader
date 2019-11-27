@@ -9,84 +9,49 @@
  * 
  */
 
+// Library
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+// File
 FILE *fi;
 
-/**
- * @brief Math function
- * 
- * @param x 
- * @return double 
- */
+// X limits
+#define x_begin -4
+#define x_end 4
+
+// Function list
+void Generate(double i, int end, double **rez);
 double equation(double x);
-
 double **createArray(double **arrayName, int row, int column);
-
-// void Search(int index, double t_rez, double **rez);
+void Search(int *index, double **rez);
+void findArrWithMax(int index, double **rez, int *i_begin, int *i_end);
+void createArrWithMax(int *i_begin, int *i_end, double **rez, double **rez1);
+void Sorting(int *i_begin, int *i_end, double **rez, double **rez1);
+void printArr(int i_begin, int i_end, double **rez, double **rez1);
 
 int j = 0;
-
+// =============================================================================================================
 int main()
 {
-    //===================================
+    /// Variables
     double t_rez, y;
     int index, t_index, i_begin, i_end;
     // Array -----------
     double **rez, **rez1;
     // **rez = all x & y values
     // **rez1 = only x & y values then y is above 0 and this array have maximum point
-    //===================================
+    // ----------------------------------------------------------------------------------
 
-    // Dinamic array
-    /**
-     * @brief Dinamic array 1
-     */
-
+    // Dinamic array1
     rez = createArray(rez, 2, 8001);
 
     // ================= Array generator ======================
-    /**
-     * @brief Calculate y value
-     */
-    // ==========================================
-    double i = -4;
-
-    while (i < 4)
-    {
-        rez[0][j] = i;
-        rez[1][j] = equation(i);
-
-        j++;
-        i += 0.001;
-    }
+    Generate(x_begin, x_end, rez);
 
     // === Searching maximum number ===========================
-
-    // Search(index, t_rez, rez);
-
-    /**
-//      * @brief Searching maximum number
-//      * 
-//      */
-    t_rez = rez[1][0];
-
-    for (int i = 1; i < j - 2; i++)
-    {
-
-        if (rez[1][i] > t_rez)
-        {
-            t_rez = rez[1][i];
-            index = i;
-        }
-    }
-    fi = fopen("Maximum.txt", "w");
-
-    fprintf(fi, "Maximum y number\nx          y\n%lf %lf\n\n", rez[0][index], rez[1][index]);
-
-    fclose(fi);
+    Search(&index, rez);
 
     // ==== Array copy only positive numbers with m aximum number in it =====
     // Searching index begin and end
@@ -94,13 +59,138 @@ int main()
      * @brief Searching for segment of positive values which the maximum number.
      * 
      */
-    t_index = index;
+    findArrWithMax(index, rez, &i_begin, &i_end);
+
+    // ----------------------------------------------------------------------------------
+    // Dinamic array
+    rez1 = createArray(rez1, 2, i_end - i_begin + 1);
+
+    // Create new array
+    createArrWithMax(&i_begin, &i_end, rez, rez1);
+
+    // =================== Sorting ============================
+    /**
+     * @brief Sorting algorithm
+     * from smallest to biggest
+     * 
+     */
+    Sorting(&i_begin, &i_end, rez, rez1);
+
+    // =================== Print ===============================
+    /**
+     * @brief Print loop
+     * From smallest to biggest
+     * 
+     */
+    printArr(i_begin, i_end, rez, rez1);
+    
+
+    // free space of array
+    free(rez);
+    free(rez1);
+
+    return 0;
+}
+// ===================================================================================================
+/**
+ * @brief Equation
+ * 
+ * @param x 
+ * @return double 
+ */
+double equation(double x)
+{
+    return -(pow(x, 4)) + 3 * pow(x, 3) + 2 * pow(x, 2) - 5 * x + 0.5;
+}
+//-------------------------------------------------------------------------------
+
+/**
+ * @brief Create a Array object
+ * 
+ * @param arrayName 
+ * @param row 
+ * @param column 
+ * @return double** 
+ */
+double **createArray(double **arrayName, int row, int column)
+{
+    arrayName = (double **)malloc(row * sizeof(double *));
+
+    for (int i = 0; i < 2; i++)
+        arrayName[i] = (double *)malloc(column * sizeof(double));
+
+    return arrayName;
+}
+//---------------------------------------------------------------------------------
+
+/**
+ * @brief Search for maximum number and print that number
+ * 
+ * @param index 
+ * @param rez 
+ */
+void Search(int *index, double **rez)
+{
+    /**
+     * @brief Searching maximum number
+     *
+     */
+    double t_rez = rez[1][0];
+
+    for (int i = 1; i < j - 2; i++)
+    {
+
+        if (rez[1][i] > t_rez)
+        {
+            t_rez = rez[1][i];
+            *index = i;
+        }
+    }
+    fi = fopen("Maximum.txt", "w");
+
+    fprintf(fi, "Maximum y number\nx          y\n%.4lf %.4lf\n\n", rez[0][*index], rez[1][*index]);
+
+    fclose(fi);
+}
+// -----------------------------------------------------------------------------------
+
+/**
+ * @brief Generate array with x and y values
+ * 
+ * @param i 
+ * @param end 
+ * @param rez 
+ */
+void Generate(double i, int end, double **rez)
+{
+    while (i < end)
+    {
+        rez[0][j] = i;
+        rez[1][j] = equation(i);
+
+        j++;
+        i += 0.001;
+    }
+}
+// -----------------------------------------------------------------------------------
+
+/**
+ * @brief Find place With max number in it
+ * 
+ * @param index 
+ * @param rez 
+ * @param i_begin 
+ * @param i_end 
+ */
+void findArrWithMax(int index, double **rez, int *i_begin, int *i_end)
+{
+    int t_index = index;
     while (1)
     {
         if (rez[1][t_index - 1] < 0)
             break;
 
-        i_begin = t_index;
+        *i_begin = t_index;
         t_index--;
     }
 
@@ -110,36 +200,42 @@ int main()
         if (rez[1][t_index + 1] < 0)
             break;
 
-        i_end = t_index;
+        *i_end = t_index;
         t_index++;
     }
+}
+// --------------------------------------------------------------------------------
 
-    // ------------------------------------------------------------
-    // Dinamic array
-    /**
-     * @brief Dinamic array 2
-     * 
-     */
-    rez1 = createArray(rez, 2, i_end - i_begin + 1);
-
-    // Create new array
-    /**
-     * @brief Creating new array
-     * 
-     */
-    for (int i = 0; i <= (i_end - i_begin); i++)
+/**
+ * @brief Create a array With Max object
+ * 
+ * @param i_begin 
+ * @param i_end 
+ * @param rez 
+ * @param rez1 
+ */
+void createArrWithMax(int *i_begin, int *i_end, double **rez, double **rez1)
+{
+    for (int i = 0; i <= (*i_end - *i_begin); i++)
     {
-        rez1[0][i] = rez[0][i_begin + i];
-        rez1[1][i] = rez[1][i_begin + i];
+        rez1[0][i] = rez[0][*i_begin + i];
+        rez1[1][i] = rez[1][*i_begin + i];
     }
+}
+// -------------------------------------------------------------------------------
 
-    // =================== Sorting ============================
-    /**
-     * @brief Sorting algorithm
-     * from smallest to biggest
-     * 
-     */
-    for (int i = 0; i <= (i_end - i_begin) - 1; i++)
+/**
+ * @brief Sorting new array from smallest to biggest
+ * 
+ * @param i_begin 
+ * @param i_end 
+ * @param rez 
+ * @param rez1 
+ */
+void Sorting(int *i_begin, int *i_end, double **rez, double **rez1)
+{
+    double t_rez;
+    for (int i = 0; i < (i_end - i_begin); i++)
     {
         for (int k = i + 1; k <= (i_end - i_begin); k++)
         {
@@ -155,70 +251,26 @@ int main()
             }
         }
     }
+}
+// -------------------------------------------------------------------------------
 
-    // =================== Print ===============================
-    /**
-     * @brief Print loop
-     * From smallest to biggest
-     * 
-     */
+/**
+ * @brief Print new smallest sorted array
+ * 
+ * @param i_begin 
+ * @param i_end 
+ * @param rez 
+ * @param rez1 
+ */
+void printArr(int i_begin, int i_end, double **rez, double **rez1)
+{
     fi = fopen("Array.txt", "w");
 
     for (int k = 0; k <= (i_end - i_begin); k++)
-        fprintf(fi, "%lf %lf\n", rez1[0][k], rez1[1][k]);
+        fprintf(fi, "%.4lf %.4lf\n", rez1[0][k], rez1[1][k]);
 
     fclose(fi);
-
-    /** 
-     * @brief Construct a new free object
-     */
-    free(rez);
-    free(rez1);
-
-    return 0;
 }
-
-double equation(double x)
-{
-    return -(pow(x, 4)) + 3 * pow(x, 3) + 2 * pow(x, 2) - 5 * x + 0.5;
-}
-
-//===================================================================================
-// Dinamic array
-double **createArray(double **arrayName, int row, int column)
-{
-    arrayName = (double **)malloc(row * sizeof(double *));
-
-    for (int i = 0; i < 2; i++)
-        arrayName[i] = (double *)malloc(column * sizeof(double));
-
-    return arrayName;
-}
-
-// === Searching maximum number ===========================
-// void Search(int index, double t_rez, double **rez)
-// {
-//     /**
-//      * @brief Searching maximum number
-//      *
-//      */
-//     t_rez = rez[1][0];
-
-//     for (int i = 1; i < j - 2; i++)
-//     {
-
-//         if (rez[1][i] > t_rez)
-//         {
-//             t_rez = rez[1][i];
-//             index = i;
-//         }
-//     }
-//     fi = fopen("Maximum.txt", "w");
-
-//     fprintf(fi, "Maximum y number\nx          y\n%lf %lf\n\n", rez[0][index], rez[1][index]);
-
-//     fclose(fi);
-// }
 //====================================================================================
 /*
 begin 5112 | end 7145
