@@ -25,6 +25,8 @@ double equation(double x);
 
 double **createArray(double **arrayName, int row, int column);
 
+// void Search(int index, double t_rez, double **rez);
+
 int j = 0;
 
 int main()
@@ -49,20 +51,26 @@ int main()
     /**
      * @brief Calculate y value
      */
-    // ==========================================   PAKEISTI I WHILE ARBA NE
-    for (double i = -4; i < 4; i += 0.001)
+    // ==========================================
+    double i = -4;
+
+    while (i < 4)
     {
         rez[0][j] = i;
         rez[1][j] = equation(i);
 
         j++;
+        i += 0.001;
     }
 
     // === Searching maximum number ===========================
+
+    // Search(index, t_rez, rez);
+
     /**
-     * @brief Searching maximum number
-     * 
-     */
+//      * @brief Searching maximum number
+//      * 
+//      */
     t_rez = rez[1][0];
 
     for (int i = 1; i < j - 2; i++)
@@ -80,7 +88,7 @@ int main()
 
     fclose(fi);
 
-    // ==== Array copy only positive numbers with maximum number in it =====
+    // ==== Array copy only positive numbers with m aximum number in it =====
     // Searching index begin and end
     /**
      * @brief Searching for segment of positive values which the maximum number.
@@ -186,6 +194,31 @@ double **createArray(double **arrayName, int row, int column)
 
     return arrayName;
 }
+
+// === Searching maximum number ===========================
+// void Search(int index, double t_rez, double **rez)
+// {
+//     /**
+//      * @brief Searching maximum number
+//      *
+//      */
+//     t_rez = rez[1][0];
+
+//     for (int i = 1; i < j - 2; i++)
+//     {
+
+//         if (rez[1][i] > t_rez)
+//         {
+//             t_rez = rez[1][i];
+//             index = i;
+//         }
+//     }
+//     fi = fopen("Maximum.txt", "w");
+
+//     fprintf(fi, "Maximum y number\nx          y\n%lf %lf\n\n", rez[0][index], rez[1][index]);
+
+//     fclose(fi);
+// }
 //====================================================================================
 /*
 begin 5112 | end 7145
