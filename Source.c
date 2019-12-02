@@ -21,7 +21,7 @@ FILE *fi;
 #define x_begin -4
 #define x_end 4
 
-// Function list
+// Functions list
 void Generate(double i, int end, double **rez);
 double equation(double x);
 double **createArray(double **arrayName, int row, int column);
@@ -235,9 +235,9 @@ void createArrWithMax(int *i_begin, int *i_end, double **rez, double **rez1)
 void Sorting(int *i_begin, int *i_end, double **rez, double **rez1)
 {
     double t_rez;
-    for (int i = 0; i < (i_end - i_begin); i++)
+    for (int i = 0; i < (*i_end - *i_begin); i++)
     {
-        for (int k = i + 1; k <= (i_end - i_begin); k++)
+        for (int k = i + 1; k <= (*i_end - *i_begin); k++)
         {
             if (rez1[1][i] > rez1[1][k])
             {

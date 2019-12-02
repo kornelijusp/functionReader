@@ -1,4 +1,0 @@
-Maximum y number
-x          y
-2.4500 8.3434
-
