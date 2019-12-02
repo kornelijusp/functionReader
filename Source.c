@@ -9,6 +9,17 @@
  * 
  */
 
+/*********************************************************************************************
+
+How it's work!
+
+1. This program create array with x (from -4 to 4) and y(from speciefic function) values.
+2. Searching for maximum y value in array.
+3. Create new array with segment of positive values to which belong maximum y value.
+4. Sorting second array from smallest to biggest value.
+
+**********************************************************************************************/
+
 // Library
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +49,7 @@ int main()
     /// Variables
     double t_rez, y;
     int index, t_index, i_begin, i_end;
+
     // Array -----------
     double **rez, **rez1;
     // **rez = all x & y values
@@ -47,13 +59,13 @@ int main()
     // Dinamic array1
     rez = createArray(rez, 2, 8001);
 
-    // ================= Array generator ======================
+    // ================= Array generator =====================================================
     Generate(x_begin, x_end, rez);
 
-    // === Searching maximum number ===========================
+    // === Searching maximum number ==========================================================
     Search(&index, rez);
 
-    // ==== Array copy only positive numbers with m aximum number in it =====
+    // ==== Array copy only positive numbers with m aximum number in it ======================
     // Searching index begin and end
     /**
      * @brief Searching for segment of positive values which the maximum number.
@@ -68,7 +80,7 @@ int main()
     // Create new array
     createArrWithMax(&i_begin, &i_end, rez, rez1);
 
-    // =================== Sorting ============================
+    // =================== Sorting ============================================================
     /**
      * @brief Sorting algorithm
      * from smallest to biggest
@@ -76,7 +88,7 @@ int main()
      */
     Sorting(&i_begin, &i_end, rez, rez1);
 
-    // =================== Print ===============================
+    // =================== Print ==============================================================
     /**
      * @brief Print loop
      * From smallest to biggest
@@ -91,7 +103,11 @@ int main()
 
     return 0;
 }
+
 // ===================================================================================================
+// ---------------------------------------------------------------------------------------------------
+// ===================================================================================================
+
 /**
  * @brief Equation
  * 
